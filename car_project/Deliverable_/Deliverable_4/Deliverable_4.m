@@ -13,13 +13,13 @@ car = Car(Ts);
 sys = car.linearize(xs, us);             % Get linearized system
 [sys_lon, sys_lat] = car.decompose(sys); % Split into longitudinal and lateral
 
+% Create Estimator
+estimator = LonEstimator(sys_lon, Ts);
+
 % Create MPC controllers
 mpc_lon = MpcControl_lon(sys_lon, Ts, H);
 mpc_lat = MpcControl_lat(sys_lat, Ts, H);
 mpc = car.merge_lin_controllers(mpc_lon, mpc_lat);
-
-% Create Longitudinal Estimator
-estimator = LonEstimator(sys_lon, Ts);
 
 %% Simulating Closed-Loop Combined MPC with Longitudinal Estimator
 
