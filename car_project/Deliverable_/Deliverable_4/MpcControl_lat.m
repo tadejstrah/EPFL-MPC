@@ -39,7 +39,7 @@ classdef MpcControl_lat < MpcControlBase
             
             % SET THE PROBLEM CONSTRAINTS con AND THE OBJECTIVE obj HERE
             y_error_penalty = 1 ;% weight of lateral position error
-            theta_error_penalty = 25 ;% weight of heading angle error
+            theta_error_penalty = 1 ;% weight of heading angle error
             Q_tracking_mat = diag([y_error_penalty, theta_error_penalty]);
             R_tracking_mat = 1; % weight of steering effort
             state_constraint = [3.5;          % Maximum allowed y
