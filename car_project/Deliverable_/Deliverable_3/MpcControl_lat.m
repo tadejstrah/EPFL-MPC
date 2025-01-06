@@ -39,9 +39,9 @@ classdef MpcControl_lat < MpcControlBase
             
             % SET THE PROBLEM CONSTRAINTS con AND THE OBJECTIVE obj HERE
             y_error_penalty = 1 ;% weight of lateral position error
-            theta_error_penalty = 1 ;% weight of heading angle error
+            theta_error_penalty = 25 ;% weight of heading angle error
             Q_tracking_mat = diag([y_error_penalty, theta_error_penalty]);
-            R_tracking_mat = 2; % weight of steering effort
+            R_tracking_mat = 1; % weight of steering effort
             state_constraint = [3.5;          % Maximum allowed y
                                 0.5;          % Minimum allowed y (-)
                                 5*pi/180;     % Maximum allowed theta
@@ -55,14 +55,14 @@ classdef MpcControl_lat < MpcControlBase
             input_constraint_sign = [1; -1];  % 
             
             % LQR to compute terminal cost
-            Q_terminal_mat = Q_tracking_mat/2;
-            R_terminal_mat = R_tracking_mat*2;
+            Q_terminal_mat = Q_tracking_mat;
+            R_terminal_mat = R_tracking_mat; % tune me if needed
             [state_feedback_gain_mat, terminal_cost_mat, ~] = dlqr(mpc.A, mpc.B, Q_terminal_mat, R_terminal_mat);
             % closed loop dynamic
             A_closed_loop = mpc.A - mpc.B*state_feedback_gain_mat;
             % terminal set
             terminal_set = polytope([state_constraint_sign; -input_constraint_sign*state_feedback_gain_mat], [state_constraint; input_constraint]);
-            
+
             % Iteratively compute the maximal invariant set
             previous_terminal_set = terminal_set;
             max_iterations = 1000; % Set a limit to prevent infinite loop
@@ -80,6 +80,12 @@ classdef MpcControl_lat < MpcControlBase
             end
             [terminal_set_sign, terminal_set_constraint] = double(terminal_set);
             
+            figure
+            hold on; grid on;
+            plot(polytope(state_constraint_sign,state_constraint), 'c');
+            plot(terminal_set, 'lime');
+            xlabel('lateral position [m]');
+            ylabel('steering angle [rad]');
 
             state_trajectory = sdpvar(nx, N);     % State trajectory [y; theta]
             control_input_trajectory = sdpvar(nu, N-1);   % Input trajectory [steering_angle]

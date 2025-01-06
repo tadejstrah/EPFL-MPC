@@ -44,7 +44,7 @@ classdef MpcControl_lon < MpcControlBase
             
             % Define weights for tracking objectives
             x_error_penalty = 0; % Weight of position error (not penalized in longitudinal control)
-            speed_error_penalty = 1; % Weight of velocity error
+            speed_error_penalty = 2; % Weight of velocity error
             Q_tracking_mat = diag([x_error_penalty, speed_error_penalty]);
             R_tracking_mat = 1; % Weight of throttle effort
             
