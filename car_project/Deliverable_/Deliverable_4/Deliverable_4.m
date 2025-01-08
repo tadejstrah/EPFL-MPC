@@ -4,7 +4,7 @@ clc
 
 %% Initialize MPC Controllers
 
-Ts = 1/10;                               % Sample time: 0.1 seconds
+Ts = 1/25;                               % Sample time: 0.1 seconds
 H = 2;                                  % Prediction horizon: 2 seconds
 
 % Setup car and get linearized model
