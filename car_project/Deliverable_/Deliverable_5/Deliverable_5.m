@@ -4,7 +4,7 @@ clc
 
 %% MPC Controller Setup
 Ts = 0.1;                                % Sampling interval: 0.1 seconds
-H = 2;                                   % Prediction horizon: 2 seconds
+H = 6;                                   % Prediction horizon: 2 seconds
 
 % Instantiate the vehicle system and linearize its dynamics
 car = Car(Ts);

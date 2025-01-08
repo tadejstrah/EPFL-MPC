@@ -25,7 +25,7 @@ B_matrix = -B_matrix;
 %% Design of Reference Tracking Controller
 % Construct an LQR controller to maintain the desired position and speed.
 
-tracking_weights = diag([25, 50]); % Penalize position and velocity errors
+tracking_weights = diag([10, 100]); % Penalize position and velocity errors
 control_penalty = 2; % Penalize control effort
 
 % Compute LQR gains for discrete-time system
