@@ -1,0 +1,15 @@
+Ts = 0.1;                                % Time step for discretization: 0.1 seconds
+H = 2;                                   % Prediction horizon in seconds
+
+car = Car(Ts);
+
+mpc = NmpcControl(car, H);
+
+x0 = [0 0 0 80/3.6];
+ref = [3 100/3.6];
+
+u = mpc.get_u(x0,ref);
+
+params = {};
+params.Tf = 15;
+params.myCar
