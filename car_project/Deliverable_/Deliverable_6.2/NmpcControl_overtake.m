@@ -88,20 +88,18 @@ classdef NmpcControl_overtake < handle
             X = opti.variable(nx,N+1); % state trajectory variables
             U = opti.variable(nu,N);   % control trajectory (throttle, brake)
 
-            Q = diag([0, 20,0,1000]); % weights for [x, y, theta, v]
-            R = diag([2000,2000]);  % weights for [delta, u]
+            Q = diag([0, 1,100,300]); % weights for [x, y, theta, v]
+            R = diag([200,100]);  % weights for [delta, u]
 
             % Inital condition
             opti.subject_to(X(:,1) == obj.x0);
 
             cost = 0;
             
-            car_l = 4.8*1.4;
-            car_w = 1.8;
+            car_l = 12;
+            car_w = 3;
             H = diag([1/(car_l^2),1/(car_w^2)]);
-            margin = 1;
             
-            s_w = 0;
             
             for k=1:N
                 state_delta = X(:,k) - [0 obj.ref(1) 0 obj.ref(2)]';
@@ -122,15 +120,11 @@ classdef NmpcControl_overtake < handle
                 lat = X(2,k);
                 p = [lon lat]';
              
-                opti.subject_to((p-p_l)' * H * (p-p_l) >= 1+margin);
+                opti.subject_to((p-p_l)' * H * (p-p_l) >= 1);
 
             end
     
-            for k=1:N-2
-                % cost = cost + (U(1,k+1)-U(1,k))*s_w ;
-                cost = cost + (U(1,k+1)+U(1,k-1)-2*U(1,k))*s_w ;
-
-            end
+      
 
             opti.subject_to( obj.u0 == U(:,1) );
 

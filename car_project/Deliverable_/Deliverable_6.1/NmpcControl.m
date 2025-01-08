@@ -56,7 +56,7 @@ classdef NmpcControl < handle
 
             % Define your problem using the opti object created above
 
-            Q = diag([0, 1,0,1]);
+            Q = diag([0,1,0,1]);
             R = diag([1,1]); 
 
             state_constraint = [0;
