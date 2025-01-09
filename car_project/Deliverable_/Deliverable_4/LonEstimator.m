@@ -49,15 +49,11 @@ classdef LonEstimator
             % Define observer poles for desired estimation dynamics (faster or slower estimation)
             observer_poles = [0.6; 0.7];  % Moderately fast response
             
-            % Calculate observer gain matrix L using pole placement
-            % Transpose augmented system and output matrices for the 'place' function
+            % Calculate observer matrix L using pole placement tehcnique
             est.L = place(est.A_hat', est.C_hat', observer_poles)';  % Transpose the result to match original orientation
             
             % Store the original continuous-time system model in the estimator object
             est.sys = sys;  % Original system model reference for potential use
-            
-            % Additional information for the observer, if needed, can be stored here
-
 
             % YOUR CODE HERE YOUR CODE HERE YOUR CODE HERE YOUR CODE HERE
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
