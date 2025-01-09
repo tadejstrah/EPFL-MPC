@@ -4,8 +4,8 @@ clc
 
 %% Initialize MPC Controllers
 
-Ts = 1/25;                               % Sample time: 0.1 seconds
-H = 2;                                  % Prediction horizon: 2 seconds
+Ts = 1/25;                               % Sample time of 40 ms seconds
+H = 3;                                  % Prediction horizon of 3 seconds
 
 % Setup car and get linearized model
 car = Car(Ts);
@@ -24,8 +24,9 @@ mpc = car.merge_lin_controllers(mpc_lon, mpc_lat);
 %% Simulating Closed-Loop Combined MPC with Longitudinal Estimator
 
 x0 = [0 0 0 80/3.6]'; % (x, y, theta, V)
-ref1 = [0 80/3.6]';   % (y ref, V ref)
-ref2 = [3 50/3.6]';   % (y ref, V ref)
+ref1 = [0 80/3.6]';   % (y_ref, V_ref)
+ref2 = [3 50/3.6]';   % (y_ref, V_ref)
+
 params = {};
 params.Tf = 15;
 params.myCar.model = car;
@@ -33,8 +34,6 @@ params.myCar.x0 = x0;
 params.myCar.est_fcn = @estimator.estimate;
 params.myCar.est_dist0 = 0;
 params.myCar.u = @mpc.get_u;
-params.myCar.ref = car.ref_step(ref1, ref2, 2); % delay reference step by 2s;
+params.myCar.ref = car.ref_step(ref1, ref2, 2);
 result = simulate(params);
 visualization(car, result);
-
-% [f1, f2, f3, f4, f5, f6] = plot_results(result);

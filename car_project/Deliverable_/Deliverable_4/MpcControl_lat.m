@@ -63,7 +63,8 @@ classdef MpcControl_lat < MpcControlBase
             % terminal set
             terminal_set = polytope([state_constraint_sign; -input_constraint_sign*state_feedback_gain_mat], [state_constraint; input_constraint]);
 
-            % Iteratively compute the maximal invariant set
+            % compute the maximal invariant set Iteratively as explained in
+            % the course
             previous_terminal_set = terminal_set;
             max_iterations = 1000; % Set a limit to prevent infinite loop
             
@@ -72,7 +73,7 @@ classdef MpcControl_lat < MpcControlBase
                 pre_terminal_set = polytope(constraint_sign * A_closed_loop, constraint);  % One-step backward reachable set
                 terminal_set = intersect(previous_terminal_set, pre_terminal_set);  % Intersect with current set
             
-                % Check for convergence
+                % Check that we reached convergence
                 if isequal(previous_terminal_set, terminal_set)
                     break;
                 end
