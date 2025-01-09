@@ -5,7 +5,7 @@ clc
 %% Configure and Initialize MPC Controllers
 
 Ts = 0.1;                                % Time step for discretization: 0.1 seconds
-H = 2;                                   % Prediction horizon in seconds
+H = 3;                                   % Prediction horizon in seconds
 
 % Set up vehicle model and linearize at a given speed
 car = Car(Ts);
